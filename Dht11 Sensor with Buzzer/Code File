@@ -1,0 +1,45 @@
+#include<dht11.h>
+#define DHT11PIN D5
+
+dht11 DHT11;
+const int buzzer_sensor = D3;
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  pinMode(BUILTIN_LED, OUTPUT);
+  pinMode(buzzer_sensor,OUTPUT);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  Serial.println("Temperature and Humidity in the room ");
+  DHT11.read(DHT11PIN);
+  Serial.println("Temperature: ");
+  Serial.println(DHT11.temperature);
+  Serial.println("Humidity: ");
+  Serial.println(DHT11.humidity);
+
+  float h;
+  h=DHT11.humidity;
+  float t;
+  t=DHT11.temperature;
+  if(t>25)
+  {
+   tone(buzzer_sensor,1000); // 1 KHz Frequency
+   delay(2000);
+   noTone(buzzer_sensor); 
+   delay(2000);
+   digitalWrite(BUILTIN_LED,HIGH);
+   delay(1000);
+   digitalWrite(BUILTIN_LED,LOW);
+   delay(1000); 
+   Serial.println("Temperature is greater than 25 ");    
+  } else {
+    Serial.println("Temperature is less than 25 ");     
+  }
+  delay(2000); 
+}
